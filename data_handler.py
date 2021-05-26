@@ -1,4 +1,7 @@
 import os
+from sklearn.feature_extraction.text import CountVectorizer, TfidfTransformer
+from sklearn.model_selection import train_test_split
+from const import TEST_BATCH_SIZE, RANDOM_STATE_SEED
 
 
 def get_sets():
@@ -21,3 +24,14 @@ def get_sets():
 
     return texts, labels
         
+
+def prepare_data(texts, labels):
+    vectorizer = CountVectorizer(stop_words='english')
+    x = vectorizer.fit_transform(texts).toarray()
+
+    tfidfconverter = TfidfTransformer()
+    x = tfidfconverter.fit_transform(x).toarray()
+
+    X_train, X_test, y_train, y_test = train_test_split(x, labels, test_size=TEST_BATCH_SIZE, random_state=RANDOM_STATE_SEED)
+    
+    return X_train, X_test, y_train, y_test
