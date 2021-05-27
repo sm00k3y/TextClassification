@@ -6,9 +6,25 @@ import numpy as np
 from const import TOP_X_WORDS
 
 
-
 def make_analisys(texts, labels):
-    pass
+    zeros, ones, twos = get_classes_ratio(labels)
+    print(f"Sum of reviews: {zeros + ones + twos}")
+    print(f"Reviews with class 0: {zeros}")
+    print(f"Reviews with class 1: {ones}")
+    print(f"Reviews with class 2: {twos}")
+    print()
+
+    avg, min_length, max_length = average_review_length(texts)
+    print(f"Average review length: {math.floor(avg)} letters")
+    print(f"Minial review length: {min_length} letters")
+    print(f"Maximal review length: {max_length} letters")
+
+    top_words, top_ranks = plot_words_chart(texts)
+    print(f"\nTop 20 words without english stop words:")
+    for i in range(len(top_words)):
+        print(f"{top_words[i]} - {top_ranks[i]}")
+
+    plot_wordcloud(texts)
 
 
 def plot_wordcloud(texts):
@@ -16,7 +32,7 @@ def plot_wordcloud(texts):
     for x in texts:
         big_texts+=x
 
-    wordcloud = WordCloud(width = 1500, height = 1000, random_state=1, background_color='white', collocations=False, stopwords = STOPWORDS).generate(big_texts)
+    wordcloud = WordCloud(width = 1200, height = 800, random_state=1, background_color='white', collocations=False, stopwords = STOPWORDS).generate(big_texts)
 
     plt.figure(figsize=(40, 30))
     plt.imshow(wordcloud) 
@@ -37,7 +53,10 @@ def get_classes_ratio(labels):
         elif lab == 2:
             twos += 1
 
-    plt.bar(["zero", "one", "two"], [zeros, ones, twos])
+    plt.bar(["Class zero", "Class one", "Class two"], [zeros, ones, twos])
+    plt.title("Number of each class in labels")
+    plt.xlabel("Class")
+    plt.ylabel("Number of occurences")
     plt.show()
 
     return zeros, ones, twos
@@ -59,6 +78,9 @@ def average_review_length(texts):
     avg = sum_of_lengths / len(texts)
 
     plt.bar(["Min Length", "Average", "Max Length"], [min_length, avg, max_length])
+    plt.title("Length of reviews")
+    plt.xlabel("Type of length")
+    plt.ylabel("Number of letters")
     plt.show()
 
     return avg, min_length, max_length
@@ -79,6 +101,9 @@ def plot_words_chart(texts):
 
     plt.plot(top_x_words, top_x_freq)
     plt.xticks(rotation=90)
+    plt.title("Frequency of top 20 words")
+    plt.xlabel("Word")
+    plt.ylabel("Number of occurences")
     plt.show()
 
-
+    return top_x_words, top_x_freq
