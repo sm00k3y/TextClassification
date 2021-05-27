@@ -22,7 +22,16 @@ def get_sets():
                 label_file = open(os.path.join(d, data_file), "r")
                 labels.extend(label_file.readlines())
 
-    return texts, labels
+    int_labels = fix_labes(labels)
+
+    return texts, int_labels
+
+
+def fix_labes(labels):
+    int_labels = []
+    for lab in labels:
+        int_labels.append(int(lab))
+    return int_labels
         
 
 def prepare_data(texts, labels):
