@@ -53,6 +53,7 @@ def get_classes_ratio(labels):
         elif lab == 2:
             twos += 1
 
+    plt.style.use('seaborn')
     plt.bar(["Class zero", "Class one", "Class two"], [zeros, ones, twos])
     plt.title("Number of each class in labels")
     plt.xlabel("Class")
