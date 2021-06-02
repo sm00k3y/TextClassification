@@ -1,6 +1,7 @@
 import data_handler
 import analize_data
 import ml_bayes
+import ml_svg
 import sys
 import os
 
@@ -14,7 +15,9 @@ def run():
 
     # Get test and train baches and pass them to the AI
     X_train, X_test, y_train, y_test = data_handler.prepare_data(texts, labels)
-    ml_bayes.check_data(X_train, X_test, y_train, y_test)
+
+    # ml_bayes.evaluate_model(X_train, X_test, y_train, y_test)
+    ml_svg.evaluate_model(X_train, X_test, y_train, y_test)
 
 
 
